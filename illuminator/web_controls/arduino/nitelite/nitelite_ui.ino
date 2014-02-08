@@ -1,4 +1,4 @@
-void margarita_ui(EthernetClient cl){ 
+void nitelite_ui(EthernetClient cl){ 
 cl.println("  <!DOCTYPE html> ");
 cl.println("  <html>");
 cl.println("      <head>");

@@ -10,7 +10,7 @@
 //byte mac[] = { 0x90, 0xA2, 0xDA, 0x0D, 0x77, 0x0B };  // POE MAC
 //byte mac[] = { 0x90, 0xA2, 0xDA, 0x0D, 0x77, 0x27 };  // POE MAC
 
-byte mac[] = { 0x90, 0xA2, 0xDA, 0x0D, 0x77, 0x3D };  // POE Santa Margarita
+byte mac[] = { 0x90, 0xA2, 0xDA, 0x0D, 0x77, 0x3D };  // POE 
 
 
 
@@ -93,7 +93,7 @@ void loop()
                         // send web page
                         Serial.println("send web page");
                         //printWebPage(client);
-                        margarita_ui(client);
+                        nitelite_ui(client);
                     }
                     // display received HTTP request on serial port
                     Serial.print(HTTP_req);

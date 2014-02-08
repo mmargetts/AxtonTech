@@ -1,12 +1,16 @@
+//define vars
 String powerStatus1       = "off";
 String powerStatus2       = "off";
 String powerStatus3       = "off";
-String lowBeamStatus1     = "off";
-String lowBeamStatus2     = "off";
-String lowBeamStatus3     = "off";
-String highBeamStatus1    = "off";
-String highBeamStatus2    = "off";
-String highBeamStatus3    = "off";
+String buttonStatus11     = "off";
+String buttonStatus21     = "ofF";
+String buttonStatus31     = "off";
+String buttonStatus12     = "off";
+String buttonStatus22     = "ofF";
+String buttonStatus32     = "off";
+String buttonStatus13     = "off";
+String buttonStatus23     = "ofF";
+String buttonStatus33     = "off";
 String dayNightStatus1    = "off";
 String dayNightStatus2    = "off";
 String dayNightStatus3    = "off";
@@ -14,28 +18,40 @@ String manualOff1         = "on";
 String manualOff2         = "on";
 String manualOff3         = "on";
 
+int io_jumper_hybrid      = 22;
+int io_jumper_zoom        = 26;
+int io_jumper_xlr         = 30;
 
-int io_jumper_illuminator1=32;
-int io_power1             =45;
-int io_in21               =49;
-int io_in11               =51;
-int io_day_night1         =47;
+int io_jumper_illuminator1= 42;
+int io_power1             = 45;
+int io_day_night1         = 47;
+int io_in31               = 49;
+int io_in21               = 51;
+int io_in11               = 53;
 
-int io_jumper_illuminator2=28;
-int io_power2             =35;
-int io_in22               =39;
-int io_in12               =41;
-int io_day_night2         =37;
-
-int io_jumper_illuminator3=24;
-int io_power3             =25;
-int io_in13               =31;
-int io_in23               =29;
-int io_day_night3         =27;
+int io_jumper_illuminator2= 38;
+int io_power2             = 33;
+int io_day_night2         = 35;
+int io_in32               = 37;
+int io_in22               = 39;
+int io_in12               = 41;
 
 
-int pinInArrary[]= {io_jumper_illuminator1,io_jumper_illuminator2,io_jumper_illuminator3,io_power1,io_power2,io_power3}; 
-int pinOutArrary[]={io_in21,io_in11,io_in22,io_in12,io_in13,io_in23}; 
+int io_jumper_illuminator3= 34;
+int io_power3             = 23;
+int io_day_night3         = 25;
+int io_in33               = 27;
+int io_in23               = 29;
+int io_in13               = 31;
+
+
+
+int pinInArrary[] = {io_jumper_illuminator1,io_jumper_illuminator2,io_jumper_illuminator3,io_power1,io_power2,io_power3,io_jumper_hybrid,io_jumper_zoom,io_jumper_xlr}; 
+int pinOutArrary[]={io_in11,io_in21,io_in31,io_in12,io_in22,io_in32,io_in13,io_in23,io_in33}; 
+int io_in1Arrary[]={io_in11,io_in21,io_in31};
+int io_in2Arrary[]={io_in12,io_in22,io_in32};
+int io_in3Arrary[]={io_in13,io_in23,io_in33};
+
 
 void initPins()
 {
@@ -58,80 +74,11 @@ void initPins()
 
 }
 
-void turnDLOn(int _dl){
-  digitalWrite(_dl, LOW);
+void setManualOff(int io[]){
+  for (int i = 0; i < (sizeof(io)/sizeof(int)) - 1; i++) {
+    digitalWrite(io[i],HIGH);
+  }
 }
-void turnDLOff(int _dl){
-  digitalWrite(_dl, HIGH);
-}
-
-void setManualOff1(){
-  digitalWrite(io_in11,HIGH);
-  digitalWrite(io_in21,HIGH);
-  manualOff1      = "on";
-  lowBeamStatus1  = "off";
-  highBeamStatus1 = "off";
-}
-void setManualOff2(){
-  digitalWrite(io_in12,HIGH);
-  digitalWrite(io_in22,HIGH);
-  manualOff2      = "on";
-  lowBeamStatus2  = "off";
-  highBeamStatus2 = "off";
-}
-void setManualOff3(){
-  digitalWrite(io_in13,HIGH);
-  digitalWrite(io_in23,HIGH);
-  manualOff3      = "on";
-  lowBeamStatus3  = "off";
-  highBeamStatus3 = "off";
-}
-
-
-void setLowBeam1(){
-  digitalWrite(io_in11,LOW);
-  digitalWrite(io_in21,HIGH);
-  manualOff1      = "off";
-  lowBeamStatus1  = "on";
-  highBeamStatus1 = "off";
-}
-void setLowBeam2(){
-  digitalWrite(io_in12,LOW);
-  digitalWrite(io_in22,HIGH);
-  manualOff2 = "off";
-  lowBeamStatus2  = "on";
-  highBeamStatus2 = "off";
-}
-void setLowBeam3(){
-  digitalWrite(io_in13,LOW);
-  digitalWrite(io_in23,HIGH);
-  manualOff3 = "off";
-  lowBeamStatus3  = "on";
-  highBeamStatus3 = "off";
-}
-
-void setHighBeam1(){
-  digitalWrite(io_in11,LOW);
-  digitalWrite(io_in21,LOW);
-  manualOff1      = "off";
-  lowBeamStatus1 = "off";
-  highBeamStatus1 = "on";
-}
-void setHighBeam2(){
-  digitalWrite(io_in12,LOW);
-  digitalWrite(io_in22,LOW);
-  manualOff2      = "off";
-  lowBeamStatus2  = "off";
-  highBeamStatus2 = "on";
-}
-void setHighBeam3(){
-  digitalWrite(io_in13,LOW);
-  digitalWrite(io_in23,LOW);
-  manualOff3      = "off";
-  lowBeamStatus3  = "off";
-  highBeamStatus3 = "on";
-}
-
 
 
 // checks if received HTTP request is switching on/off LEDs
@@ -145,11 +92,35 @@ void SetDLs(void)
   }else{powerStatus1="on";}
 
   if (StrContains(HTTP_req, "manualOff1=1")){
-    setManualOff1();
-  }else if (StrContains(HTTP_req, "lowBeam1=1")){
-    setLowBeam1();
-  }else if (StrContains(HTTP_req, "highBeam1=1")){
-    setHighBeam1();
+    setManualOff(io_in1Arrary);
+    manualOff1      = "on";
+    buttonStatus11  = "off";
+    buttonStatus21  = "off";
+    buttonStatus31  = "off";
+  }else if (StrContains(HTTP_req, "button11=1")){
+    digitalWrite(io_in11,LOW);
+    manualOff1     = "off";
+    buttonStatus11 = "on";
+  }else if (StrContains(HTTP_req, "button11=0")){
+    digitalWrite(io_in11,HIGH);
+    manualOff1     = "off";
+    buttonStatus11 = "off";
+  }else if (StrContains(HTTP_req, "button21=1")){
+    digitalWrite(io_in21,LOW);
+    manualOff1     = "off";
+    buttonStatus21 = "on";
+  }else if (StrContains(HTTP_req, "button21=0")){
+    digitalWrite(io_in21,HIGH);
+    manualOff1     = "off";
+    buttonStatus21 = "off";
+  }else if (StrContains(HTTP_req, "button31=1")){
+    digitalWrite(io_in31,LOW);
+    manualOff1     = "off";
+    buttonStatus31 = "on";
+  }else if (StrContains(HTTP_req, "button31=0")){
+    digitalWrite(io_in31,HIGH);
+    manualOff1     = "off";
+    buttonStatus31 = "off";
   }else if (StrContains(HTTP_req, "dayNight1=1")){
     digitalWrite(io_day_night1,HIGH);
     dayNightStatus1 = "on";
@@ -164,11 +135,35 @@ void SetDLs(void)
   }else{powerStatus2="on";}
   
   if (StrContains(HTTP_req, "manualOff2=1")){
-    setManualOff2();
-  }else if (StrContains(HTTP_req, "lowBeam2=1")){
-    setLowBeam2();
-  }else if (StrContains(HTTP_req, "highBeam2=1")){
-    setHighBeam2();
+    setManualOff(io_in2Arrary);
+    manualOff2      = "on";
+    buttonStatus12  = "off";
+    buttonStatus22  = "off";
+    buttonStatus32  = "off";
+  }else if (StrContains(HTTP_req, "button12=1")){
+    digitalWrite(io_in12,LOW);
+    manualOff2     = "off";
+    buttonStatus12 = "on";
+  }else if (StrContains(HTTP_req, "button12=0")){
+    digitalWrite(io_in12,HIGH);
+    manualOff2     = "off";
+    buttonStatus12 = "off";
+  }else if (StrContains(HTTP_req, "button22=1")){
+    digitalWrite(io_in22,LOW);
+    manualOff2     = "off";
+    buttonStatus22 = "on";
+  }else if (StrContains(HTTP_req, "button22=0")){
+    digitalWrite(io_in22,HIGH);
+    manualOff2     = "off";
+    buttonStatus22 = "off";
+  }else if (StrContains(HTTP_req, "button32=1")){
+    digitalWrite(io_in32,LOW);
+    manualOff2     = "off";
+    buttonStatus32 = "on";
+  }else if (StrContains(HTTP_req, "button32=0")){
+    digitalWrite(io_in32,HIGH);
+    manualOff2     = "off";
+    buttonStatus32 = "off";
   }else if (StrContains(HTTP_req, "dayNight2=1")){
     digitalWrite(io_day_night2,HIGH);
     dayNightStatus2 = "on";
@@ -183,11 +178,35 @@ void SetDLs(void)
   }else{powerStatus3="on";}
   
   if (StrContains(HTTP_req, "manualOff3=1")){
-    setManualOff3();
-  }else if (StrContains(HTTP_req, "lowBeam3=1")){
-    setLowBeam3();
-  }else if (StrContains(HTTP_req, "highBeam3=1")){
-    setHighBeam3();
+    setManualOff(io_in3Arrary);
+    manualOff3      = "on";
+    buttonStatus13  = "off";
+    buttonStatus23  = "off";
+    buttonStatus33  = "off";
+  }else if (StrContains(HTTP_req, "button13=1")){
+    digitalWrite(io_in13,LOW);
+    manualOff3     = "off";
+    buttonStatus13 = "on";
+  }else if (StrContains(HTTP_req, "button13=0")){
+    digitalWrite(io_in13,HIGH);
+    manualOff3     = "off";
+    buttonStatus13 = "off";
+  }else if (StrContains(HTTP_req, "button23=1")){
+    digitalWrite(io_in23,LOW);
+    manualOff3     = "off";
+    buttonStatus23 = "on";
+  }else if (StrContains(HTTP_req, "button23=0")){
+    digitalWrite(io_in23,HIGH);
+    manualOff3     = "off";
+    buttonStatus23 = "off";
+  }else if (StrContains(HTTP_req, "button33=1")){
+    digitalWrite(io_in33,LOW);
+    manualOff3     = "off";
+    buttonStatus33 = "on";
+  }else if (StrContains(HTTP_req, "button33=0")){
+    digitalWrite(io_in33,HIGH);
+    manualOff3     = "off";
+    buttonStatus33 = "off";
   }else if (StrContains(HTTP_req, "dayNight3=1")){
     digitalWrite(io_day_night3,HIGH);
     dayNightStatus3 = "on";
@@ -195,7 +214,6 @@ void SetDLs(void)
     digitalWrite(io_day_night3,LOW);
     dayNightStatus3 = "off";
   }
-  
 }
 
 // send the XML file DATA status
@@ -224,25 +242,35 @@ cl.println(" ");
       cl.print(powerStatus3);
     cl.println("</powerStatus>");
 cl.println(" ");
-    cl.print("<lowBeamStatus>");
-      cl.print(lowBeamStatus1);
-    cl.println("</lowBeamStatus>");
-    cl.print("<lowBeamStatus>");
-      cl.print(lowBeamStatus2);
-    cl.println("</lowBeamStatus>");
-    cl.print("<lowBeamStatus>");
-      cl.print(lowBeamStatus3);
-    cl.println("</lowBeamStatus>");
+    cl.print("<buttonStatus>");
+      cl.print(buttonStatus11);
+    cl.println("</buttonStatus>");
+    cl.print("<buttonStatus>");
+      cl.print(buttonStatus21);
+    cl.println("</buttonStatus>");
+    cl.print("<buttonStatus>");
+      cl.print(buttonStatus31);
+    cl.println("</buttonStatus>");
 cl.println(" ");
-    cl.print("<highBeamStatus>");
-      cl.print(highBeamStatus1);
-    cl.println("</highBeamStatus>");
-    cl.print("<highBeamStatus>");
-      cl.print(highBeamStatus2);
-    cl.println("</highBeamStatus>");
-    cl.print("<highBeamStatus>");
-      cl.print(highBeamStatus3);
-    cl.println("</highBeamStatus>");
+    cl.print("<buttonStatus>");
+      cl.print(buttonStatus12);
+    cl.println("</buttonStatus>");
+    cl.print("<buttonStatus>");
+      cl.print(buttonStatus22);
+    cl.println("</buttonStatus>");
+    cl.print("<buttonStatus>");
+      cl.print(buttonStatus32);
+    cl.println("</buttonStatus>");
+cl.println(" ");
+    cl.print("<buttonStatus>");
+      cl.print(buttonStatus13);
+    cl.println("</buttonStatus>");
+    cl.print("<buttonStatus>");
+      cl.print(buttonStatus23);
+    cl.println("</buttonStatus>");
+    cl.print("<buttonStatus>");
+      cl.print(buttonStatus33);
+    cl.println("</buttonStatus>");
 cl.println(" ");
     cl.print("<dayNightStatus>");
       cl.print(dayNightStatus1);
