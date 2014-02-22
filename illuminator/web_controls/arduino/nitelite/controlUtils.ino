@@ -1,3 +1,9 @@
+typedef struct {
+  char* button_name;
+  char* port_name;
+  int  io_port;  
+} IR_Button;
+
 //define vars
 String powerStatus1       = "off";
 String powerStatus2       = "off";
@@ -85,7 +91,7 @@ void setManualOff(int io[]){
 // also saves the state of the LEDs
 void SetDLs(void)
 {
-  Serial.println(HTTP_req);
+ // Serial.println(HTTP_req);
   
   if (digitalRead(io_power1)){
     powerStatus1="off";
@@ -98,10 +104,13 @@ void SetDLs(void)
     buttonStatus21  = "off";
     buttonStatus31  = "off";
   }else if (StrContains(HTTP_req, "button11=1")){
+    Serial.println("***** button11 on ***");
     digitalWrite(io_in11,LOW);
     manualOff1     = "off";
     buttonStatus11 = "on";
   }else if (StrContains(HTTP_req, "button11=0")){
+    Serial.println("***** button11 off ***");
+    Serial.println(HTTP_req);
     digitalWrite(io_in11,HIGH);
     manualOff1     = "off";
     buttonStatus11 = "off";
@@ -219,6 +228,21 @@ void SetDLs(void)
 // send the XML file DATA status
 void XML_response(EthernetClient cl)
 {
+  Serial.println("");
+  Serial.println("**************");
+  Serial.print("manualOff1 ");
+ Serial.println ( manualOff1);
+  Serial.print("powerStatus ");
+ Serial.println( powerStatus1);
+  Serial.print("buttonStatus11 ");
+ Serial.println( buttonStatus11);
+  Serial.print("buttonStatus21 ");
+ Serial.println( buttonStatus21);
+  Serial.print("buttonStatus31 ");
+ Serial.println( buttonStatus31);
+  Serial.println("**************");
+  Serial.println("");
+  
     cl.println("<?xml version = \"1.0\" ?>");
     cl.println("<outputs>");
 
@@ -242,35 +266,35 @@ cl.println(" ");
       cl.print(powerStatus3);
     cl.println("</powerStatus>");
 cl.println(" ");
-    cl.print("<buttonStatus>");
+    cl.print("<buttonStatus11>");
       cl.print(buttonStatus11);
-    cl.println("</buttonStatus>");
-    cl.print("<buttonStatus>");
+    cl.println("</buttonStatus11>");
+    cl.print("<buttonStatus21>");
       cl.print(buttonStatus21);
-    cl.println("</buttonStatus>");
-    cl.print("<buttonStatus>");
+    cl.println("</buttonStatus21>");
+    cl.print("<buttonStatus31>");
       cl.print(buttonStatus31);
-    cl.println("</buttonStatus>");
+    cl.println("</buttonStatus31>");
 cl.println(" ");
-    cl.print("<buttonStatus>");
+    cl.print("<buttonStatus12>");
       cl.print(buttonStatus12);
-    cl.println("</buttonStatus>");
-    cl.print("<buttonStatus>");
+    cl.println("</buttonStatus12>");
+    cl.print("<buttonStatus22>");
       cl.print(buttonStatus22);
-    cl.println("</buttonStatus>");
-    cl.print("<buttonStatus>");
+    cl.println("</buttonStatus22>");
+    cl.print("<buttonStatus32>");
       cl.print(buttonStatus32);
-    cl.println("</buttonStatus>");
+    cl.println("</buttonStatus32>");
 cl.println(" ");
-    cl.print("<buttonStatus>");
+    cl.print("<buttonStatus13>");
       cl.print(buttonStatus13);
-    cl.println("</buttonStatus>");
-    cl.print("<buttonStatus>");
+    cl.println("</buttonStatus13>");
+    cl.print("<buttonStatus23>");
       cl.print(buttonStatus23);
-    cl.println("</buttonStatus>");
-    cl.print("<buttonStatus>");
+    cl.println("</buttonStatus23>");
+    cl.print("<buttonStatus33>");
       cl.print(buttonStatus33);
-    cl.println("</buttonStatus>");
+    cl.println("</buttonStatus33>");
 cl.println(" ");
     cl.print("<dayNightStatus>");
       cl.print(dayNightStatus1);
@@ -322,3 +346,4 @@ char StrContains(char *str, char *sfind)
 
     return 0;
 }
+

@@ -5,18 +5,12 @@
 #include <Ethernet.h>
 #define REQ_BUF_SZ   100
 
-// MAC address from Ethernet shield sticker under board
-//byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0xC6, 0xFC };  //  No POE----But assigned to poe unit at axton 
-//byte mac[] = { 0x90, 0xA2, 0xDA, 0x0D, 0x77, 0x0B };  // POE MAC
-//byte mac[] = { 0x90, 0xA2, 0xDA, 0x0D, 0x77, 0x27 };  // POE MAC
 
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x0D, 0x77, 0x3D };  // POE 
 
 
 
 IPAddress ip(192, 168, 1, 103); // IP address at home
-//IPAddress ip(10, 1, 1, 125); // IP address at home
-//IPAddress gateway(10,1,1,254);
 
 
 EthernetServer server(3000);  // create a server at port 80
@@ -53,7 +47,7 @@ void loop()
     
 
     if (client) {  // got client?
-        Serial.println("got client");
+        //Serial.println("got client");
         boolean currentLineIsBlank = true;
         while (client.connected()) {
             if (client.available()) {   // client data available to read
@@ -81,7 +75,7 @@ void loop()
                         client.println();
                         SetDLs();
                         // send XML file containing input states
-                        Serial.println("calling xml response");
+                        //Serial.println("calling xml response");
                         XML_response(client);
                     }
                     else {  // web page request
@@ -91,12 +85,12 @@ void loop()
                         client.println("Access-Control-Allow-Origin: http://axtontech.com");
                         client.println();
                         // send web page
-                        Serial.println("send web page");
+                        //Serial.println("send web page");
                         //printWebPage(client);
                         nitelite_ui(client);
                     }
                     // display received HTTP request on serial port
-                    Serial.print(HTTP_req);
+                    //Serial.print(HTTP_req);
                     // reset buffer index and all buffer elements to 0
                     req_index = 0;
                     StrClear(HTTP_req, REQ_BUF_SZ);
