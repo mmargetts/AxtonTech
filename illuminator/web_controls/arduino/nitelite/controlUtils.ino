@@ -82,6 +82,8 @@ void initPins()
 
 void setManualOff(int io[]){
   for (int i = 0; i < (sizeof(io)/sizeof(int)) - 1; i++) {
+    Serial.print("setting io high ");
+    Serial.println(io[i]);
     digitalWrite(io[i],HIGH);
   }
 }
@@ -97,13 +99,7 @@ void SetDLs(void)
     powerStatus1="off";
   }else{powerStatus1="on";}
 
-  if (StrContains(HTTP_req, "manualOff1=1")){
-    setManualOff(io_in1Arrary);
-    manualOff1      = "on";
-    buttonStatus11  = "off";
-    buttonStatus21  = "off";
-    buttonStatus31  = "off";
-  }else if (StrContains(HTTP_req, "button11=1")){
+  if (StrContains(HTTP_req, "button11=1")){
     Serial.println("***** button11 on ***");
     digitalWrite(io_in11,LOW);
     manualOff1     = "off";
@@ -131,9 +127,27 @@ void SetDLs(void)
     manualOff1     = "off";
     buttonStatus31 = "off";
   }else if (StrContains(HTTP_req, "dayNight1=1")){
+    Serial.println("***** dayNigh on ***");
+    Serial.println(HTTP_req);
+
+    digitalWrite(io_in11,HIGH);
+    digitalWrite(io_in21,HIGH);
+    digitalWrite(io_in31,HIGH);
+    buttonStatus11 = "off";
+    buttonStatus21 = "off";
+    buttonStatus31 = "off";
     digitalWrite(io_day_night1,HIGH);
     dayNightStatus1 = "on";
   }else if (StrContains(HTTP_req, "dayNight1=0")){
+    Serial.println("***** dayNigh off ***");
+    Serial.println(HTTP_req);
+
+    digitalWrite(io_in11,HIGH);
+    digitalWrite(io_in21,HIGH);
+    digitalWrite(io_in31,HIGH);
+    buttonStatus11 = "off";
+    buttonStatus21 = "off";
+    buttonStatus31 = "off";
     digitalWrite(io_day_night1,LOW);
     dayNightStatus1 = "off";
   }
@@ -230,6 +244,8 @@ void XML_response(EthernetClient cl)
 {
   Serial.println("");
   Serial.println("**************");
+  Serial.print("day night " );
+  Serial.println(dayNightStatus1);
   Serial.print("manualOff1 ");
  Serial.println ( manualOff1);
   Serial.print("powerStatus ");
