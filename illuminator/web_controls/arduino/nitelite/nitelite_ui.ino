@@ -44,13 +44,19 @@ cl.println("      						if (this.responseXML != null) {");
 if(digitalRead(io_jumper_illuminator1)==0 || digitalRead(io_jumper_illuminator2) == 0 || digitalRead(io_jumper_illuminator3) == 0 ){
   cl.println("                                                            if (this.responseXML.getElementsByTagName('buttonStatus11')[0].childNodes[0].nodeValue === 'on') {");
   cl.println("								  document.illuminatorForm1.button11.checked = true;");
+  cl.println("								  document.illuminatorForm1.button21.checked = false;");
+  cl.println("								  document.illuminatorForm1.button21.checked = false;");
   cl.println("							        } else { document.illuminatorForm1.button11.checked = false;}");
 
   cl.println("                                                            if (this.responseXML.getElementsByTagName('buttonStatus21')[0].childNodes[0].nodeValue === 'on') {");
+  cl.println("								  document.illuminatorForm1.button11.checked = false;");
   cl.println("								  document.illuminatorForm1.button21.checked = true;");
+  cl.println("								  document.illuminatorForm1.button31.checked = false;");
   cl.println("							        } else { document.illuminatorForm1.button21.checked = false;}");
 
   cl.println("                                                            if (this.responseXML.getElementsByTagName('buttonStatus31')[0].childNodes[0].nodeValue === 'on') {");
+  cl.println("								  document.illuminatorForm1.button11.checked = false;");
+  cl.println("								  document.illuminatorForm1.button21.checked = false;");
   cl.println("								  document.illuminatorForm1.button31.checked = true;");
   cl.println("							        } else { document.illuminatorForm1.button31.checked = false;}");
 

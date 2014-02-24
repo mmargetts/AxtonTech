@@ -94,34 +94,54 @@ void setManualOff(int io[]){
 void SetDLs(void)
 {
  // Serial.println(HTTP_req);
+
+// ***************** XLR *****************  
   
   if (digitalRead(io_power1)){
     powerStatus1="off";
   }else{powerStatus1="on";}
 
-  if (StrContains(HTTP_req, "button11=1")){
+  if (StrContains(HTTP_req, "button11=1")){        //LOW
     digitalWrite(io_in11,LOW);
-    manualOff1     = "off";
+    digitalWrite(io_in21,HIGH);
+    digitalWrite(io_in31,HIGH);
     buttonStatus11 = "on";
+    buttonStatus21 = "off";
+    buttonStatus31 = "off";
   }else if (StrContains(HTTP_req, "button11=0")){
     digitalWrite(io_in11,HIGH);
-    manualOff1     = "off";
-    buttonStatus11 = "off";
-  }else if (StrContains(HTTP_req, "button21=1")){
-    digitalWrite(io_in21,LOW);
-    manualOff1     = "off";
-    buttonStatus21 = "on";
-  }else if (StrContains(HTTP_req, "button21=0")){
     digitalWrite(io_in21,HIGH);
-    manualOff1     = "off";
+    digitalWrite(io_in31,HIGH);
+    buttonStatus11 = "off";
     buttonStatus21 = "off";
-  }else if (StrContains(HTTP_req, "button31=1")){
+    buttonStatus31 = "off";
+  }else if (StrContains(HTTP_req, "button21=1")){  //MEDIUM
+    digitalWrite(io_in11,LOW);
+    digitalWrite(io_in21,LOW);
+    digitalWrite(io_in31,HIGH);
+    buttonStatus11 = "off";
+    buttonStatus21 = "on";
+    buttonStatus31 = "off";
+  }else if (StrContains(HTTP_req, "button21=0")){
+    digitalWrite(io_in11,HIGH);
+    digitalWrite(io_in21,HIGH);
+    digitalWrite(io_in31,HIGH);
+    buttonStatus11 = "off";
+    buttonStatus21 = "off";
+    buttonStatus31 = "off";
+  }else if (StrContains(HTTP_req, "button31=1")){  // HIGH
+    digitalWrite(io_in11,LOW);
+    digitalWrite(io_in21,LOW);
     digitalWrite(io_in31,LOW);
-    manualOff1     = "off";
+    buttonStatus11 = "off";
+    buttonStatus21 = "off";
     buttonStatus31 = "on";
   }else if (StrContains(HTTP_req, "button31=0")){
+    digitalWrite(io_in11,HIGH);
+    digitalWrite(io_in21,HIGH);
     digitalWrite(io_in31,HIGH);
-    manualOff1     = "off";
+    buttonStatus11 = "off";
+    buttonStatus21 = "off";
     buttonStatus31 = "off";
   }else if (StrContains(HTTP_req, "dayNight1=1")){
     Serial.println("***** dayNigh on ***");
@@ -133,7 +153,7 @@ void SetDLs(void)
     buttonStatus11 = "off";
     buttonStatus21 = "off";
     buttonStatus31 = "off";
-    digitalWrite(io_day_night1,HIGH);
+    digitalWrite(io_day_night1,LOW);
     dayNightStatus1 = "on";
   }else if (StrContains(HTTP_req, "dayNight1=0")){
     Serial.println("***** dayNigh off ***");
@@ -145,16 +165,16 @@ void SetDLs(void)
     buttonStatus11 = "off";
     buttonStatus21 = "off";
     buttonStatus31 = "off";
-    digitalWrite(io_day_night1,LOW);
+    digitalWrite(io_day_night1,HIGH);
     dayNightStatus1 = "off";
   }
   
-  
-  if (digitalRead(io_power2)){
+// ***************** ZOOM *****************  
+  if (digitalRead(io_power2)){   
     powerStatus2="off";
   }else{powerStatus2="on";}
-  
-  if (StrContains(HTTP_req, "button12=1")){
+ 
+  if (StrContains(HTTP_req, "button12=1")){     //NARROW        
     digitalWrite(io_in12,LOW);
     digitalWrite(io_in22,HIGH);
     digitalWrite(io_in32,HIGH);
@@ -168,7 +188,7 @@ void SetDLs(void)
     buttonStatus12 = "off";
     buttonStatus22 = "off";
     buttonStatus32 = "off";
-  }else if (StrContains(HTTP_req, "button22=1")){
+  }else if (StrContains(HTTP_req, "button22=1")){    //MEDIUM
     digitalWrite(io_in12,HIGH);
     digitalWrite(io_in22,LOW);
     digitalWrite(io_in32,HIGH);
@@ -182,7 +202,7 @@ void SetDLs(void)
     buttonStatus12 = "off";
     buttonStatus22 = "off";
     buttonStatus32 = "off";
-  }else if (StrContains(HTTP_req, "button32=1")){
+  }else if (StrContains(HTTP_req, "button32=1")){  //WIDE
     digitalWrite(io_in12,HIGH);
     digitalWrite(io_in22,HIGH);
     digitalWrite(io_in32,LOW);
@@ -203,7 +223,7 @@ void SetDLs(void)
     buttonStatus12 = "off";
     buttonStatus22 = "off";
     buttonStatus32 = "off";
-    digitalWrite(io_day_night2,HIGH);
+    digitalWrite(io_day_night2,LOW);
     dayNightStatus2 = "on";
   }else if (StrContains(HTTP_req, "dayNight2=0")){
     digitalWrite(io_in12,HIGH);
@@ -212,11 +232,12 @@ void SetDLs(void)
     buttonStatus12 = "off";
     buttonStatus22 = "off";
     buttonStatus32 = "off";
-    digitalWrite(io_day_night2,LOW);
+    digitalWrite(io_day_night2,HIGH);
     dayNightStatus2 = "off";
   }
   
 
+// ***************** HYBRID *****************  
   if (digitalRead(io_power3)){
     powerStatus3="off";
   }else{powerStatus3="on";}
@@ -246,14 +267,14 @@ void SetDLs(void)
     digitalWrite(io_in23,HIGH);
     buttonStatus13 = "off";
     buttonStatus23 = "off";
-    digitalWrite(io_day_night3,HIGH);
+    digitalWrite(io_day_night3,LOW);
     dayNightStatus3 = "on";
   }else if (StrContains(HTTP_req, "dayNight3=0")){
     digitalWrite(io_in13,HIGH);
     digitalWrite(io_in23,HIGH);
     buttonStatus13 = "off";
     buttonStatus23 = "off";
-    digitalWrite(io_day_night3,LOW);
+    digitalWrite(io_day_night3,HIGH);
     dayNightStatus3 = "off";
   }
 }
