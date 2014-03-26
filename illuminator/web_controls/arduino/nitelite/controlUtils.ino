@@ -147,12 +147,13 @@ void SetDLs(void)
     Serial.println("***** dayNigh on ***");
     Serial.println(HTTP_req);
 
-    digitalWrite(io_in11,HIGH);
-    digitalWrite(io_in21,HIGH);
-    digitalWrite(io_in31,HIGH);
-    buttonStatus11 = "off";
-    buttonStatus21 = "off";
-    buttonStatus31 = "off";
+// leave ir in current state for Day Night
+//    digitalWrite(io_in11,HIGH);
+//    digitalWrite(io_in21,HIGH);
+//    digitalWrite(io_in31,HIGH);
+//    buttonStatus11 = "off";
+//    buttonStatus21 = "off";
+//    buttonStatus31 = "off";
     digitalWrite(io_day_night1,LOW);
     dayNightStatus1 = "on";
   }else if (StrContains(HTTP_req, "dayNight1=0")){
@@ -217,21 +218,21 @@ void SetDLs(void)
     buttonStatus22 = "off";
     buttonStatus32 = "off";
   }else if (StrContains(HTTP_req, "dayNight2=1")){
-    digitalWrite(io_in12,HIGH);
-    digitalWrite(io_in22,HIGH);
-    digitalWrite(io_in32,HIGH);
-    buttonStatus12 = "off";
-    buttonStatus22 = "off";
-    buttonStatus32 = "off";
+//    digitalWrite(io_in12,HIGH);
+//    digitalWrite(io_in22,HIGH);
+//    digitalWrite(io_in32,HIGH);
+//    buttonStatus12 = "off";
+//    buttonStatus22 = "off";
+//    buttonStatus32 = "off";
     digitalWrite(io_day_night2,LOW);
     dayNightStatus2 = "on";
   }else if (StrContains(HTTP_req, "dayNight2=0")){
-    digitalWrite(io_in12,HIGH);
-    digitalWrite(io_in22,HIGH);
-    digitalWrite(io_in32,HIGH);
-    buttonStatus12 = "off";
-    buttonStatus22 = "off";
-    buttonStatus32 = "off";
+//    digitalWrite(io_in12,HIGH);
+//    digitalWrite(io_in22,HIGH);
+//    digitalWrite(io_in32,HIGH);
+//    buttonStatus12 = "off";
+//    buttonStatus22 = "off";
+//    buttonStatus32 = "off";
     digitalWrite(io_day_night2,HIGH);
     dayNightStatus2 = "off";
   }
@@ -263,17 +264,17 @@ void SetDLs(void)
     buttonStatus13 = "off";
     buttonStatus23 = "off";
   }else if (StrContains(HTTP_req, "dayNight3=1")){
-    digitalWrite(io_in13,HIGH);
-    digitalWrite(io_in23,HIGH);
-    buttonStatus13 = "off";
-    buttonStatus23 = "off";
+//    digitalWrite(io_in13,HIGH);
+//    digitalWrite(io_in23,HIGH);
+//    buttonStatus13 = "off";
+//    buttonStatus23 = "off";
     digitalWrite(io_day_night3,LOW);
     dayNightStatus3 = "on";
   }else if (StrContains(HTTP_req, "dayNight3=0")){
-    digitalWrite(io_in13,HIGH);
-    digitalWrite(io_in23,HIGH);
-    buttonStatus13 = "off";
-    buttonStatus23 = "off";
+//    digitalWrite(io_in13,HIGH);
+//    digitalWrite(io_in23,HIGH);
+//    buttonStatus13 = "off";
+//    buttonStatus23 = "off";
     digitalWrite(io_day_night3,HIGH);
     dayNightStatus3 = "off";
   }
@@ -282,23 +283,24 @@ void SetDLs(void)
 // send the XML file DATA status
 void XML_response(EthernetClient cl)
 {
+  /*
   Serial.println("");
   Serial.println("**************");
   Serial.print("day night " );
-  Serial.println(dayNightStatus2);
-  Serial.print("manualOff2 ");
- Serial.println ( manualOff2);
+  Serial.println(dayNightStatus1);
+  Serial.print("manualOff1 ");
+ Serial.println ( manualOff1);
   Serial.print("powerStatus ");
- Serial.println( powerStatus2);
-  Serial.print("buttonStatus12 ");
- Serial.println( buttonStatus12);
-  Serial.print("buttonStatus22 ");
- Serial.println( buttonStatus22);
-  Serial.print("buttonStatus32 ");
- Serial.println( buttonStatus32);
+ Serial.println( powerStatus1);
+  Serial.print("buttonStatus11 ");
+ Serial.println( buttonStatus11);
+  Serial.print("buttonStatus21 ");
+ Serial.println( buttonStatus21);
+  Serial.print("buttonStatus31 ");
+ Serial.println( buttonStatus31);
   Serial.println("**************");
   Serial.println("");
-  
+  */
     cl.println("<?xml version = \"1.0\" ?>");
     cl.println("<outputs>");
 
