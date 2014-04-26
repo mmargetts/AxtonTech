@@ -87,7 +87,8 @@ void loop()
                         // send web page
                         //Serial.println("send web page");
                         //printWebPage(client);
-                        nitelite_ui(client);
+                       // nitelite_ui(client);
+                       nitelitedemo(client);
                     }
                     // display received HTTP request on serial port
                     //Serial.print(HTTP_req);
