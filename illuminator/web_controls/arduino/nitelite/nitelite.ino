@@ -71,7 +71,7 @@ void loop()
                         // send rest of HTTP header
                         client.println("Content-Type: text/xml");
                         client.println("Connection: keep-alive");
-                        client.println("Access-Control-Allow-Origin: http://axtontech.com");
+                        client.println("Access-Control-Allow-Origin: *");
                         client.println();
                         SetDLs();
                         // send XML file containing input states
@@ -82,13 +82,13 @@ void loop()
                         // send rest of HTTP header
                         client.println("Content-Type: text/html");
                         client.println("Connection: keep-alive");
-                        client.println("Access-Control-Allow-Origin: http://axtontech.com");
+                        client.println("Access-Control-Allow-Origin: *");
                         client.println();
                         // send web page
                         //Serial.println("send web page");
                         //printWebPage(client);
                        // nitelite_ui(client);
-                       nitelitedemo(client);
+                       nitelite_ui(client);
                     }
                     // display received HTTP request on serial port
                     //Serial.print(HTTP_req);
@@ -113,5 +113,6 @@ void loop()
         client.stop(); // close the connection
     } // end if (client)
 }
+
 
 
