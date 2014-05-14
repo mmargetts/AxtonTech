@@ -1,10 +1,7 @@
-typedef struct {
-  char* button_name;
-  char* port_name;
-  int  io_port;
-} IR_Button;
-
 //define vars
+
+
+
 String powerStatus1       = "off";
 String powerStatus2       = "off";
 String powerStatus3       = "off";
@@ -61,6 +58,10 @@ int io_in3Arrary[] = {io_in13, io_in23, io_in33};
 
 void initPins()
 {
+  
+    analogWriteResolution(4);
+  pinMode(2,OUTPUT);
+
   // set default pin modes
   for (int i = 0; i < sizeof(pinInArrary) / sizeof(int); i++) {
     pinMode(pinInArrary[i], INPUT_PULLUP);
@@ -161,6 +162,7 @@ void hybridOff() {
   digitalWrite(io_in13, HIGH);
   digitalWrite(io_in23, HIGH);
   digitalWrite(io_in33, HIGH);
+  analogWrite(2,0);
 }
 
 void hybridIR() {
@@ -182,12 +184,7 @@ void hybridWhiteLight() {
 }
 
 void hybridStrobe() {
-  while(true){
-  hybridWhiteLight();
-    delay(500);
-    hybridOff();
-  }
-  
+  analogWrite(2,127);  
 }
 
 
@@ -234,56 +231,17 @@ void SetDLs(void)
       hybridIR();
     } else if (StrContains(HTTP_req, "button23=1")) { // WHITE LIGHT
       hybridWhiteLight();
+      hybridStrobe();
     } else if (StrContains(HTTP_req, "button33=1")) { // STROBE
       hybridStrobe();
-    }  else if (StrContains(HTTP_req, "hybridPower=0")) { //turn it off
+    }
+  }  else if (StrContains(HTTP_req, "hybridPower=0")) { //turn it off
       hybridOff();
     }
-  }
 }
 
 
 
-//  if (digitalRead(io_power3)){
-//    powerStatus3="off";
-//  }else{powerStatus3="on";}
-//
-//  if (StrContains(HTTP_req, "button13=1")){
-//    digitalWrite(io_in13,LOW);
-//    digitalWrite(io_in23,HIGH);
-//    buttonStatus13 = "on";
-//    buttonStatus23 = "off";
-//  }else if (StrContains(HTTP_req, "button13=0")){
-//    digitalWrite(io_in13,HIGH);
-//    digitalWrite(io_in23,HIGH);
-//    buttonStatus13 = "off";
-//    buttonStatus23 = "off";
-//  }else if (StrContains(HTTP_req, "button23=1")){
-//    digitalWrite(io_in13,HIGH);
-//    digitalWrite(io_in23,LOW);
-//    buttonStatus13 = "off";
-//    buttonStatus23 = "on";
-//  }else if (StrContains(HTTP_req, "button23=0")){
-//    digitalWrite(io_in13,HIGH);
-//    digitalWrite(io_in23,HIGH);
-//    buttonStatus13 = "off";
-//    buttonStatus23 = "off";
-//  }else if (StrContains(HTTP_req, "dayNight3=1")){
-////    digitalWrite(io_in13,HIGH);
-////    digitalWrite(io_in23,HIGH);
-////    buttonStatus13 = "off";
-////    buttonStatus23 = "off";
-//    digitalWrite(io_day_night3,LOW);
-//    dayNightStatus3 = "on";
-//  }else if (StrContains(HTTP_req, "dayNight3=0")){
-////    digitalWrite(io_in13,HIGH);
-////    digitalWrite(io_in23,HIGH);
-////    buttonStatus13 = "off";
-////    buttonStatus23 = "off";
-//    digitalWrite(io_day_night3,HIGH);
-//    dayNightStatus3 = "off";
-//  }
-//}
 
 // send the XML file DATA status
 void XML_response(EthernetClient cl)
