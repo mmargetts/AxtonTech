@@ -20,6 +20,11 @@ String dayNightStatus3    = "off";
 String xlrPowerStatus     = "off";
 String zoomPowerStatus    = "off";
 String hybridPowerStatus  = "off";
+String strobeState        = "off";
+String strobe             = "off";
+long previousMillis       = 0;
+long interval             = 1000; 
+
 
 int io_jumper_hybrid      = 22;
 int io_jumper_zoom        = 26;
@@ -96,6 +101,7 @@ void xlrOff() {
   digitalWrite(io_in11, HIGH);
   digitalWrite(io_in21, HIGH);
   digitalWrite(io_in31, HIGH);
+  strobe = "off";
 
 }
 
@@ -125,6 +131,7 @@ void zoomOff() {
   digitalWrite(io_in12, HIGH);
   digitalWrite(io_in22, HIGH);
   digitalWrite(io_in32, HIGH);
+  strobe = "off";
 }
 
 void zoomWide() {
@@ -162,7 +169,7 @@ void hybridOff() {
   digitalWrite(io_in13, HIGH);
   digitalWrite(io_in23, HIGH);
   digitalWrite(io_in33, HIGH);
-  analogWrite(2,0);
+  strobe = "off";
 }
 
 void hybridIR() {
@@ -192,6 +199,8 @@ void hybridStrobe() {
 // also saves the state of the LEDs
 void SetDLs(void)
 {
+  unsigned long currentMillis = millis();
+
   Serial.println(HTTP_req);
 
   // ***************** XLR *****************
@@ -231,12 +240,22 @@ void SetDLs(void)
       hybridIR();
     } else if (StrContains(HTTP_req, "button23=1")) { // WHITE LIGHT
       hybridWhiteLight();
-      hybridStrobe();
     } else if (StrContains(HTTP_req, "button33=1")) { // STROBE
-      hybridStrobe();
+      strobeState = "on";
     }
   }  else if (StrContains(HTTP_req, "hybridPower=0")) { //turn it off
       hybridOff();
+    }
+    
+    if (strobeState == "on" && currentMillis - previousMillis > interval ){
+      previousMillis = currentMillis;
+      if (strobeState == "on"){
+        digitalWrite(io_in23, HIGH);
+        strobe = "off";
+      }else{
+        digitalWrite(io_in23, LOW);
+        strobe = "on";
+    }
     }
 }
 
