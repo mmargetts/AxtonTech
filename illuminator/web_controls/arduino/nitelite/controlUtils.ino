@@ -23,7 +23,7 @@ String hybridPowerStatus  = "off";
 String strobeState        = "off";
 String alarm              = "off";
 long previousMillis       = 0;
-long interval             = 1000; 
+long interval             = 1; 
 
 
 int io_jumper_hybrid      = 22;
@@ -193,6 +193,17 @@ void hybridWhiteLight() {
   digitalWrite(io_in33, HIGH);
 }
 
+void hybridAlarm() {
+  alarm="on";
+  strobeState="on";
+  buttonStatus13 = "off";
+  buttonStatus23 = "off";
+  buttonStatus33 = "on";
+  digitalWrite(io_in13, HIGH);
+  digitalWrite(io_in23, HIGH);
+  digitalWrite(io_in33, LOW);
+}
+
 
 
 // checks if received HTTP request is switching on/off LEDs
@@ -241,8 +252,7 @@ void SetDLs(void)
     } else if (StrContains(HTTP_req, "button23=1")) { // WHITE LIGHT
       hybridWhiteLight();
     } else if (StrContains(HTTP_req, "button33=1")) { // STROBE
-      strobeState = "on";
-      alarm="on";
+      hybridAlarm();
     }
   }  else if (StrContains(HTTP_req, "hybridPower=0")) { //turn it off
       hybridOff();
@@ -266,29 +276,6 @@ void SetDLs(void)
 // send the XML file DATA status
 void XML_response(EthernetClient cl)
 {
-
-  Serial.println("");
-  Serial.println("**************");
-  //  Serial.print("day night " );
-  //  Serial.println(dayNightStatus1);
-  Serial.print("xlrPower ");
-  Serial.println ( xlrPowerStatus);
-  Serial.print(" ");
-  Serial.println ( buttonStatus11);
-  Serial.print("button21 ");
-  Serial.println ( buttonStatus21);
-
-
-  //  Serial.print("powerStatus ");
-  // Serial.println( powerStatus1);
-  //  Serial.print("buttonStatus11 ");
-  // Serial.println( buttonStatus11);
-  //  Serial.print("buttonStatus21 ");
-  // Serial.println( buttonStatus21);
-  //  Serial.print("buttonStatus31 ");
-  // Serial.println( buttonStatus31);
-  Serial.println("**************");
-  Serial.println("");
 
   cl.println("<?xml version = \"1.0\" ?>");
   cl.println("<outputs>");
