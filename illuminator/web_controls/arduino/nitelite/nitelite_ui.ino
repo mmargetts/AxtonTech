@@ -604,7 +604,7 @@ cl.println("                <strong class='hybridStong' for='Lighting'>Lighting 
 cl.println("                <div class='hybridLights'>");
 cl.println("                  <label for='irlight'><input type='radio' name='light' id='irlight'>IR Light</label>");
 cl.println("                  <label for='whiteLight'><input type='radio' name='light' id='whiteLight'>White Light</label>");
-cl.println("                    <!-- <label for='alarm'><input type='radio' name='light' id='alarm'>Alarm - White Strobe</label> -->");
+cl.println("                  <label for='alarm'><input type='radio' name='light' id='alarm'>Alarm - White Strobe</label>");
 cl.println("                </div>");
 cl.println("              </div>");
 cl.println("            </div>");
@@ -642,6 +642,7 @@ if(digitalRead(io_jumper_illuminator3) == 0 ){
 cl.println("        hybridToggle.onclick = toggle;");
 cl.println("        document.getElementById('irlight').onchange = hybridButton;");
 cl.println("        document.getElementById('whiteLight').onchange = hybridButton;");
+cl.println("        document.getElementById('alarm').onchange = hybridButton;");
 }
 cl.println("");
 cl.println("        ");
@@ -769,8 +770,9 @@ cl.println("}");
 cl.println("");
 cl.println("function hybridButton(){");
 cl.println("    hybridPower = '&hybridPower=1';");
-cl.println("  if(this.id=='irlight') _button13 = '&button13=1';");
-cl.println("  else _button23 = '&button23=1'; ");
+cl.println("  if(this.id=='irlight'){ _button13 = '&button13=1';}");
+cl.println("  else if(this.id=='whiteLight'){_button23 = '&button23=1';}");
+cl.println("  else{_button33 = '&button33=1'}");
 cl.println("}");
 cl.println("        GetArduinoIO();");
 cl.println("      </script>");

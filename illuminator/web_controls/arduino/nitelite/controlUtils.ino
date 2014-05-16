@@ -21,7 +21,7 @@ String xlrPowerStatus     = "off";
 String zoomPowerStatus    = "off";
 String hybridPowerStatus  = "off";
 String strobeState        = "off";
-String strobe             = "off";
+String alarm              = "off";
 long previousMillis       = 0;
 long interval             = 1000; 
 
@@ -101,7 +101,6 @@ void xlrOff() {
   digitalWrite(io_in11, HIGH);
   digitalWrite(io_in21, HIGH);
   digitalWrite(io_in31, HIGH);
-  strobe = "off";
 
 }
 
@@ -131,7 +130,6 @@ void zoomOff() {
   digitalWrite(io_in12, HIGH);
   digitalWrite(io_in22, HIGH);
   digitalWrite(io_in32, HIGH);
-  strobe = "off";
 }
 
 void zoomWide() {
@@ -169,10 +167,13 @@ void hybridOff() {
   digitalWrite(io_in13, HIGH);
   digitalWrite(io_in23, HIGH);
   digitalWrite(io_in33, HIGH);
-  strobe = "off";
+  strobeState = "off";
+  alarm="off";
 }
 
 void hybridIR() {
+  alarm="off";
+  strobeState="off";
   buttonStatus13 = "on";
   buttonStatus23 = "off";
   buttonStatus33 = "off";
@@ -182,6 +183,8 @@ void hybridIR() {
 }
 
 void hybridWhiteLight() {
+  alarm="off";
+  strobeState="off";
   buttonStatus13 = "off";
   buttonStatus23 = "on";
   buttonStatus33 = "off";
@@ -190,9 +193,6 @@ void hybridWhiteLight() {
   digitalWrite(io_in33, HIGH);
 }
 
-void hybridStrobe() {
-  analogWrite(2,127);  
-}
 
 
 // checks if received HTTP request is switching on/off LEDs
@@ -242,19 +242,20 @@ void SetDLs(void)
       hybridWhiteLight();
     } else if (StrContains(HTTP_req, "button33=1")) { // STROBE
       strobeState = "on";
+      alarm="on";
     }
   }  else if (StrContains(HTTP_req, "hybridPower=0")) { //turn it off
       hybridOff();
     }
     
-    if (strobeState == "on" && currentMillis - previousMillis > interval ){
+    if (alarm == "on" && currentMillis - previousMillis > interval ){
       previousMillis = currentMillis;
       if (strobeState == "on"){
-        digitalWrite(io_in23, HIGH);
-        strobe = "off";
+        digitalWrite(io_in33, HIGH);
+        strobeState = "off";
       }else{
-        digitalWrite(io_in23, LOW);
-        strobe = "on";
+        digitalWrite(io_in33, LOW);
+        strobeState = "on";
     }
     }
 }
