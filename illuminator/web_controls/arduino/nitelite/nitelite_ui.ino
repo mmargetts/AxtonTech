@@ -705,7 +705,7 @@ cl.println("  nocache = '?nocache=' + Math.random() * 1000000;");
 cl.println("  var path = 'ajax_inputs' + nocache + xlrPower + hybridPower + zoomPower + _dayNight1 + _dayNight2 + _dayNight3 + _button11 + _button21 + _button31 + _button12 + _button22 + _button32 + _button13 + _button23 + _button33;");
 cl.println("  request.open('GET', path, true);");
 cl.println("  request.send(null);");
-cl.println("  setTimeout('GetArduinoIO()', 1000);");
+cl.println("  setTimeout('GetArduinoIO()', 250);");
 cl.println("");
 cl.println("  xlrPower ='';");
 cl.println("  _button11   ='';");

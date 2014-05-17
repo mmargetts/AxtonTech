@@ -200,8 +200,8 @@ void hybridAlarm() {
   buttonStatus23 = "off";
   buttonStatus33 = "on";
   digitalWrite(io_in13, HIGH);
-  digitalWrite(io_in23, HIGH);
-  digitalWrite(io_in33, LOW);
+  digitalWrite(io_in23, LOW);
+  digitalWrite(io_in33, HIGH);
 }
 
 
@@ -261,10 +261,10 @@ void SetDLs(void)
     if (alarm == "on" && currentMillis - previousMillis > interval ){
       previousMillis = currentMillis;
       if (strobeState == "on"){
-        digitalWrite(io_in33, HIGH);
+        digitalWrite(io_in23, HIGH);
         strobeState = "off";
       }else{
-        digitalWrite(io_in33, LOW);
+        digitalWrite(io_in23, LOW);
         strobeState = "on";
     }
     }
